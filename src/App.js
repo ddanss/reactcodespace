@@ -1,29 +1,42 @@
+import React from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src="Octocat.png" className="App-logo" alt="logo" />
-        <p>
-          GitHub Codespaces <span className="heart">♥️</span> React
-        </p>
-        <p className="small">
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
-    </div>
-  );
-}
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {headline: "CAT"};
+    // this.getHeadlines();
+  }
 
+  getHeadlines = async () => {
+    const response = await fetch("https://api.thecatapi.com/v1/images/search");
+    const responseJson = await response.json();
+    this.setState(_ => ({
+      headline: responseJson
+    }));
+  }
+  
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <p>
+            <button onClick={this.getHeadlines}>
+              Get Random Cat
+            </button>
+          </p>
+          <p className="small">
+            {this.state.headline[0].url ? JSON.stringify(this.state.headline[0].url) : ""}
+          </p>
+          {this.state.headline == "CAT" ? "" : 
+            <img
+              src={this.state.headline[0].url}
+              alt="new"
+            />
+          }
+        </header>
+      </div>
+    );
+  }
+}
 export default App;
