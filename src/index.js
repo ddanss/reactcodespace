@@ -3,11 +3,50 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ProSidebarProvider } from 'react-pro-sidebar';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+} from "react-router-dom";
+import SideMenu from './SideMenu';
+import Tensorflow from './Tensorflow';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element:
+      <div>
+        <SideMenu/>
+        <main></main>
+        </div>,
+    children: [
+      {
+        path: "/App",
+        element: <App/>
+      },
+      {
+        path: "/Tensorflow",
+        element: <Tensorflow/>
+      }
+    ]
+  },
+  {
+    path: "/App",
+    element: <App/>
+  },
+  {
+    path: "/Tensorflow",
+    element: <Tensorflow/>
+  }
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <ProSidebarProvider>
+      <RouterProvider router={router} />
+    </ProSidebarProvider>
   </React.StrictMode>
 );
 
